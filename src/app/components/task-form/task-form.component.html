@@ -1,0 +1,57 @@
+<div class="card mt-4">
+  <div class="card-header">
+    <h2>{{ isEditMode ? 'Edit Task' : 'Create New Task' }}</h2>
+  </div>
+  <div class="card-body">
+    <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+      <div class="mb-3">
+        <label for="title" class="form-label">Title</label>
+        <input type="text" id="title" formControlName="title" class="form-control"
+               [ngClass]="{'is-invalid': taskForm.get('title')?.invalid && taskForm.get('title')?.touched}">
+        <div *ngIf="taskForm.get('title')?.invalid && taskForm.get('title')?.touched" class="invalid-feedback">
+          Title is required.
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <textarea id="description" formControlName="description" class="form-control"></textarea>
+      </div>
+
+      <div class="mb-3">
+        <label for="dueDate" class="form-label">Due Date</label>
+        <input type="date" id="dueDate" formControlName="dueDate" class="form-control"
+               [ngClass]="{'is-invalid': taskForm.get('dueDate')?.invalid && taskForm.get('dueDate')?.touched}">
+        <div *ngIf="taskForm.get('dueDate')?.invalid && taskForm.get('dueDate')?.touched" class="invalid-feedback">
+          Due Date is required.
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="categoryId" class="form-label">Category</label>
+        <select id="categoryId" formControlName="categoryId" class="form-select"
+                [ngClass]="{'is-invalid': taskForm.get('categoryId')?.invalid && taskForm.get('categoryId')?.touched}">
+          <option value="" disabled>Select a category</option>
+          <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
+        </select>
+        <div *ngIf="taskForm.get('categoryId')?.invalid && taskForm.get('categoryId')?.touched" class="invalid-feedback">
+          Category is required.
+        </div>
+      </div>
+
+      <div class="mb-3" *ngIf="isEditMode">
+        <label for="status" class="form-label">Status</label>
+        <select id="status" formControlName="status" class="form-select"
+                [ngClass]="{'is-invalid': taskForm.get('status')?.invalid && taskForm.get('status')?.touched}">
+          <option *ngFor="let status of taskStatuses" [value]="status">{{ status }}</option>
+        </select>
+        <div *ngIf="taskForm.get('status')?.invalid && taskForm.get('status')?.touched" class="invalid-feedback">
+          Status is required.
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-success me-2" [disabled]="taskForm.invalid">{{ isEditMode ? 'Update Task' : 'Create Task' }}</button>
+      <button type="button" class="btn btn-secondary" routerLink="/tasks">Cancel</button>
+    </form>
+  </div>
+</div>
